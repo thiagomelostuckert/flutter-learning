@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/question.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 /* 
 void main(){
@@ -18,42 +19,58 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final questions = const [
+  final _questions = const [
     {
       "questionText":
           'Se você tivesse oportunidade iria para qual desses países?',
       "answers": [
-        "Estados Unidos",
-        "Canadá",
-        "Australia",
-        "Irlanda",
-        "Portugal"
+        {"text": "Estados Unidos", "score": 5},
+        {"text": "Canadá", "score": 4},
+        {"text": "Australia", "score": 3},
+        {"text": "Irlanda", "score": 2},
+        {"text": "Portugal", "score": 1},
       ],
     },
     {
       "questionText": 'Quais idiomas você já fala?',
-      "answers": ["Inglês", "Francês", "Espanhol", "Italiano", "Alemão"],
+      "answers": [
+        {"text": "Inglês", "score": 5},
+        {"text": "Francês", "score": 4},
+        {"text": "Espanhol", "score": 3},
+        {"text": "Italiano", "score": 2},
+        {"text": "Alemão", "score": 1},
+      ],
     },
     {
       "questionText": 'Quais países você já visitou de férias?',
       "answers": [
-        "Estados Unidos",
-        "Canadá",
-        "Australia",
-        "Irlanda",
-        "Portugal"
+        {"text": "Estados Unidos", "score": 5},
+        {"text": "Canadá", "score": 4},
+        {"text": "Australia", "score": 3},
+        {"text": "Irlanda", "score": 2},
+        {"text": "Portugal", "score": 1},
       ],
     },
   ];
 
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() {
       this._questionIndex += 1;
     });
 
-    if (_questionIndex < questions.length) {
+    if (_questionIndex < _questions.length) {
       print(this._questionIndex);
     } else {
       print("Última pergunta");
@@ -64,27 +81,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Experience abroad'),
-        ),
-        body: _questionIndex < questions.length
-            ?
-            //Text('Love moves the world, but what we know about it?'),
-            Column(
-                children: [
-                  Question(
-                    questions[_questionIndex]['questionText'],
-                  ),
-                  ...(questions[_questionIndex]["answers"] as List<String>)
-                      .map((answerText) {
-                    return Answer(_answerQuestion, answerText);
-                  }).toList()
-                ],
-              )
-            : Center(
-                child: Text("Fim das perguntas"),
-              ),
-      ),
+          appBar: AppBar(
+            title: Text('Experience abroad'),
+          ),
+          body: _questionIndex < _questions.length
+              ? Quiz(
+                  questions: _questions,
+                  answerQuestion: _answerQuestion,
+                  questionIndex: _questionIndex,
+                )
+              : Result(_totalScore, _resetQuiz)),
     );
   }
 }
