@@ -1,4 +1,7 @@
 # https://github.com/dwyl/english-words
+
+import re
+
 def main():
     f = open('words_alpha.txt')
     lines = f.readlines()
@@ -20,7 +23,7 @@ def main():
     for jogada in range(0, 6):
         print("Jogada" + str(jogada))
         letra_certa = input(
-            "Digite as letras que você já tenha certeza, as que não tiver digite \"*\", exemplo A**L*:")
+        "Digite as letras que você já tenha certeza, no formato de expressão regular, exemplo \"..[^UI]T.\":")
         letra_nao += input("Digite as letras que você tem certeza que não estão na palavra, todas as letras juntas, exemplo BDE:")
         letra_nao = letra_nao.upper()
         letra_sim += input("Digite as letras que você tem certeza que estão na palavra, todas as letras juntas, exemplo CFGO:")
@@ -30,10 +33,10 @@ def main():
         for word in words_jogada:
             word = word.upper()
             word_valida = True
-            for idx in range(0, 5):
-                if letra_certa[idx] != '*' and word[idx] != letra_certa[idx]:
-                    word_valida = False
-                    break
+
+            pattern = r""+ letra_certa
+            if not re.match(pattern, word):
+                word_valida = False
 
             if not set(letra_sim).issubset(set(word)):
                 word_valida = False
@@ -41,11 +44,12 @@ def main():
             if set(letra_nao).issubset(set(word)):
                 word_valida = False
 
-            if word_valida: 
+            if word_valida:
                 print(word)
                 words_filter.append(word)
-        
+
         words_jogada = words_filter
+
 
 if __name__ == "__main__":
     main()
