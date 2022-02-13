@@ -26,8 +26,10 @@ def main():
         "Digite as letras que você já tenha certeza, no formato de expressão regular, exemplo \"..[^UI]T.\":")
         letra_nao += input("Digite as letras que você tem certeza que não estão na palavra, todas as letras juntas, exemplo BDE:")
         letra_nao = letra_nao.upper()
+        
         letra_sim += input("Digite as letras que você tem certeza que estão na palavra, todas as letras juntas, exemplo CFGO:")
         letra_sim = letra_sim.upper()
+        
         words_filter = []
 
         for word in words_jogada:
