@@ -2,6 +2,7 @@
 
 import re
 
+
 def main():
     f = open('words_alpha.txt')
     lines = f.readlines()
@@ -23,27 +24,28 @@ def main():
     for jogada in range(0, 6):
         print("Jogada" + str(jogada))
         letra_certa = input(
-        "Digite as letras que você já tenha certeza, no formato de expressão regular, exemplo \"..[^UI]T.\":")
+            "Digite as letras que você já tenha certeza, no formato de expressão regular, exemplo \"..[^UI]T.\":")
         letra_nao += input("Digite as letras que você tem certeza que não estão na palavra, todas as letras juntas, exemplo BDE:")
         letra_nao = letra_nao.upper()
-        
+
         letra_sim += input("Digite as letras que você tem certeza que estão na palavra, todas as letras juntas, exemplo CFGO:")
         letra_sim = letra_sim.upper()
-        
+
         words_filter = []
 
         for word in words_jogada:
+
             word = word.upper()
             word_valida = True
 
-            pattern = r""+ letra_certa
+            pattern = r"" + letra_certa
             if not re.match(pattern, word):
                 word_valida = False
 
-            if not set(letra_sim).issubset(set(word)):
+            if not set(letra_sim).intersection(set(word)):
                 word_valida = False
 
-            if set(letra_nao).issubset(set(word)):
+            if set(letra_nao).intersection(set(word)):
                 word_valida = False
 
             if word_valida:
