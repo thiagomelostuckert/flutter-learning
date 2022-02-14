@@ -23,7 +23,7 @@ def main():
         print(set(word1))
         print(set(letters_yes))
         
-    if not set(letters_not).issubset(set(word1)):
+    if not set(letters_not).intersection(set(word1)):
         print(set(word1))
         print(set(letters_not))
             
