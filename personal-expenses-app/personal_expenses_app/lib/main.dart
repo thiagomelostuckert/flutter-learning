@@ -13,15 +13,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.orange,
+        errorColor: Colors.red,
         accentColor: Colors.deepOrange,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
+            button: TextStyle(
+              color: Colors.white,
+            )),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
@@ -48,16 +51,23 @@ class _MyHomePageState extends State<MyHomePage> {
     //       id: 't2', title: 'Novas camisas', amount: 24.00, date: DateTime.now()),
   ];
 
-  void _addNewTransaction(String inputTitle, double inputAmount) {
+  void _addNewTransaction(
+      String inputTitle, double inputAmount, DateTime selectedDate) {
     final newTx = Transaction(
       title: inputTitle,
       amount: inputAmount,
-      date: DateTime.now(),
+      date: selectedDate,
       id: DateTime.now().toString(),
     );
 
     setState(() {
       _userTransations.add(newTx);
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransations.removeWhere((element) => element.id == id);
     });
   }
 
@@ -101,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_userTransations),
+            TransactionList(_userTransations, _deleteTransaction),
           ],
         ),
       ),
